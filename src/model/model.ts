@@ -7,7 +7,7 @@ import { DecompositionTreeNode } from './decompositionTreeNode'
 
 export class Model {
   webIfcApi: WebIfc.IfcAPI
-  group: Group
+  private group: Group
 
   constructor(webIfcApi: WebIfc.IfcAPI, group: Group) {
     this.webIfcApi = webIfcApi
@@ -37,7 +37,7 @@ export class Model {
   }
 
   addToScene(scene: THREE.Scene) {
-    scene.add(this.group.createThreeJsGroup())
+    scene.add(this.group.threeJsInstance)
   }
 
   getMetadata(): Metadata {

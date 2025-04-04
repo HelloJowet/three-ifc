@@ -1,12 +1,12 @@
 import * as THREE from 'three'
 
 export class MeshInstance {
-  expressId: number
+  visible: boolean
   matrix: THREE.Matrix4
   color: THREE.Color
 
-  constructor(expressId: number, matrix: THREE.Matrix4, color: THREE.Color) {
-    this.expressId = expressId
+  constructor(visible: boolean, matrix: THREE.Matrix4, color: THREE.Color) {
+    this.visible = visible
     this.matrix = matrix
     this.color = color
   }

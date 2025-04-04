@@ -2,16 +2,18 @@ import * as WebIfc from 'web-ifc'
 import * as THREE from 'three'
 
 import { MeshInstance } from './meshInstance'
-import { Mesh } from './mesh'
+import { InstancedMesh } from './instancedMesh'
 
 export class Group {
-  meshes: Mesh[] = []
+  private meshes: InstancedMesh[] = []
   coordinationMatrix = new THREE.Matrix4()
+  threeJsInstance: THREE.Group = new THREE.Group()
 
   constructor(webIfcApi: WebIfc.IfcAPI, excludedEntityTypes: Set<number>, includedEntityTypes?: Set<number>) {
     const expressIds = this.getExpressIds(webIfcApi, excludedEntityTypes, includedEntityTypes)
-    const meshes = this.createMeshes(webIfcApi, expressIds)
-    for (const mesh of meshes.values()) this.meshes.push(mesh)
+    this.meshes = this.createMeshes(webIfcApi, expressIds)
+
+    for (const mesh of this.meshes.values()) this.threeJsInstance.add(mesh.threeJsInstance)
 
     const matrix = webIfcApi.GetCoordinationMatrix(0)
     this.coordinationMatrix.fromArray(matrix)
@@ -36,8 +38,8 @@ export class Group {
     return expressIds
   }
 
-  private createMeshes(webIfcApi: WebIfc.IfcAPI, expressIds: number[]): Map<string, Mesh> {
-    const meshes = new Map<string, Mesh>()
+  private createMeshes(webIfcApi: WebIfc.IfcAPI, expressIds: number[]): InstancedMesh[] {
+    const meshesAndInstances: { [meshId: string]: { mesh: InstancedMesh; instances: { [expressId: number]: MeshInstance } } } = {}
 
     webIfcApi.StreamMeshes(0, expressIds, (webIfcMesh) => {
       for (let i = 0; i < webIfcMesh.geometries.size(); i++) {
@@ -50,24 +52,20 @@ export class Group {
         const transparent = webIfcGeometry.color.w !== 1
         const meshId = transparent ? `${webIfcGeometry.geometryExpressID}-transparent` : webIfcGeometry.geometryExpressID.toString()
 
-        let mesh = meshes.get(meshId)
+        let meshAndInstances = meshesAndInstances[meshId]
         // Create mesh if it doesn't exist
-        if (!mesh) mesh = new Mesh(webIfcApi, webIfcGeometry.geometryExpressID, transparent)
+        if (!meshAndInstances) meshAndInstances = { mesh: new InstancedMesh(webIfcApi, webIfcGeometry.geometryExpressID, transparent), instances: {} }
+        meshAndInstances.instances[webIfcMesh.expressID] = new MeshInstance(true, transformMatrix, color)
 
-        mesh.instances.push(new MeshInstance(webIfcMesh.expressID, transformMatrix, color))
-
-        meshes.set(meshId, mesh)
+        meshesAndInstances[meshId] = meshAndInstances
       }
     })
 
-    return meshes
-  }
+    let meshes = Object.values(meshesAndInstances).map((meshAndInstances) => {
+      meshAndInstances.mesh.addInstances(meshAndInstances.instances)
+      return meshAndInstances.mesh
+    })
 
-  createThreeJsGroup(): THREE.Group {
-    const group = new THREE.Group()
-    for (const mesh of this.meshes) {
-      group.add(mesh.createThreeJsInstancedMesh())
-    }
-    return group
+    return meshes
   }
 }

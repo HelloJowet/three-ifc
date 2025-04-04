@@ -1,5 +1,3 @@
-import * as WebIfc from 'web-ifc'
-
 export class DecompositionTreeNode {
   expressId: number
   type: string
