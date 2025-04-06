@@ -3,6 +3,9 @@ import { v4 as uuidv4 } from 'uuid'
 
 import { MeshInstanceId } from '../types'
 
+/**
+ * MeshInstance represents a single instanced mesh item.
+ */
 export class MeshInstance {
   id: MeshInstanceId = uuidv4()
   visible: boolean

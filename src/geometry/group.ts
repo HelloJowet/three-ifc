@@ -6,6 +6,10 @@ import { WebIfcApi } from '../webIfc'
 import { InstancedMesh } from './instancedMesh'
 import { MeshInstance } from './meshInstance'
 
+/**
+ * Group represents a collection of InstancedMeshes.
+ * It handles creation, visibility control and Three.js grouping.
+ */
 export class Group {
   private instancedMeshes: Map<InstancedMeshId, InstancedMesh> = new Map()
   private threeJsInstance: THREE.Group = new THREE.Group()
@@ -22,6 +26,9 @@ export class Group {
     return this.threeJsInstance
   }
 
+  /**
+   * Sets visibility of mesh instances based on Express IDs
+   */
   setVisibleInstances(visibleExpressIds: Set<ExpressId>) {
     const instancedMeshesVisibleInstancesIds: Map<InstancedMeshId, Set<MeshInstanceId>> = new Map()
 
@@ -66,6 +73,9 @@ export class Group {
   //     }
   //   }
 
+  /**
+   * Generates InstancedMesh objects and maps them to Express IDs
+   */
   private createMeshes(webIfcApi: WebIfc.IfcAPI, expressIds: number[]) {
     const instancedMeshesInstances: Map<InstancedMeshId, Set<MeshInstance>> = new Map()
 

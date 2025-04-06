@@ -5,6 +5,9 @@ import { InstancedMeshId, MeshInstanceId } from '../types'
 import { WebIfcGeometry } from '../webIfc'
 import { MeshInstance } from './meshInstance'
 
+/**
+ * InstancedMesh represents a single Three.js InstancedMesh with tracking of visible/invisible instances.
+ */
 export class InstancedMesh {
   id: InstancedMeshId
   transparent: boolean
@@ -55,6 +58,9 @@ export class InstancedMesh {
     oldThreeJsInstance.dispose()
   }
 
+  /**
+   * Sets visible instances and rebuilds the buffer to match
+   */
   setVisibleInstances(visibleInstanceIds: Set<MeshInstanceId>) {
     if (this.instanceUpdateBlocked) {
       console.warn('InstancedMesh can not be updated, because it is blocked')
