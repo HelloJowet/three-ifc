@@ -1,4 +1,5 @@
 import { Model } from './model'
+export { DecompositionTreeNode } from './decompositionTreeNode'
 export { Model } from './model'
 
 // async function loadFileFromURL(url: string) {

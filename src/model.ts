@@ -2,8 +2,8 @@ import * as WebIfc from 'web-ifc'
 import * as THREE from 'three'
 
 import { Metadata } from './metadata'
-import { Group } from './group'
 import { DecompositionTreeNode } from './decompositionTreeNode'
+import { Group } from './geometry/group'
 
 export class Model {
   webIfcApi: WebIfc.IfcAPI

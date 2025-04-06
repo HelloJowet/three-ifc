@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "three": "^0.175.0",
+    "uuid": "^11.1.0",
     "web-ifc": "^0.0.68"
   },
   "devDependencies": {
