@@ -1,5 +1,5 @@
-import * as WebIfc from 'web-ifc'
 import * as THREE from 'three'
+import * as WebIfc from 'web-ifc'
 
 export class WebIfcGeometry {
   static createThreeJsBufferGeometry(webIfcApi: WebIfc.IfcAPI, geometryExpressId: number): THREE.BufferGeometry {

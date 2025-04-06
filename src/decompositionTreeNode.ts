@@ -23,7 +23,7 @@ export class DecompositionTreeNode {
       webIfcNode.expressID,
       webIfcNode.type,
       properties,
-      webIfcNode.children.map((child: any) => DecompositionTreeNode.fromWebIfcNode(child))
+      webIfcNode.children.map((child: any) => DecompositionTreeNode.fromWebIfcNode(child)),
     )
   }
 }

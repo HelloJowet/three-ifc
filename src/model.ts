@@ -1,9 +1,9 @@
-import * as WebIfc from 'web-ifc'
 import * as THREE from 'three'
+import * as WebIfc from 'web-ifc'
 
-import { Metadata } from './metadata'
 import { DecompositionTreeNode } from './decompositionTreeNode'
 import { Group } from './geometry/group'
+import { Metadata } from './metadata'
 
 export class Model {
   webIfcApi: WebIfc.IfcAPI
@@ -20,7 +20,7 @@ export class Model {
     excludedEntityTypes: Set<number> = new Set<number>([WebIfc.IFCOPENINGELEMENT]),
     // Exclusive list of categories that will be converted to fragments.
     includedEntityTypes?: Set<number>,
-    webIfcLoaderSettings?: WebIfc.LoaderSettings
+    webIfcLoaderSettings?: WebIfc.LoaderSettings,
   ): Promise<Model> {
     // initialize and configure a web ifc api instance
     const webIfcApi = new WebIfc.IfcAPI()

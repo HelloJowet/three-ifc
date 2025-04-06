@@ -11,6 +11,7 @@
   "author": "contact@jonasfrei.de",
   "license": "ISC",
   "dependencies": {
+    "@ianvs/prettier-plugin-sort-imports": "^4.4.1",
     "three": "^0.175.0",
     "uuid": "^11.1.0",
     "web-ifc": "^0.0.68"

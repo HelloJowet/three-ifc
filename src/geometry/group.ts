@@ -1,9 +1,9 @@
-import * as WebIfc from 'web-ifc'
 import * as THREE from 'three'
+import * as WebIfc from 'web-ifc'
 
 import { ExpressId, InstancedMeshId, MeshInstanceId, ThreeJsInstancedMeshId } from '../types'
-import { InstancedMesh } from './instancedMesh'
 import { WebIfcApi } from '../webIfc'
+import { InstancedMesh } from './instancedMesh'
 import { MeshInstance } from './meshInstance'
 
 export class Group {

@@ -1,9 +1,9 @@
-import * as WebIfc from 'web-ifc'
 import * as THREE from 'three'
+import * as WebIfc from 'web-ifc'
 
 import { InstancedMeshId, MeshInstanceId } from '../types'
-import { MeshInstance } from './meshInstance'
 import { WebIfcGeometry } from '../webIfc'
+import { MeshInstance } from './meshInstance'
 
 export class InstancedMesh {
   id: InstancedMeshId

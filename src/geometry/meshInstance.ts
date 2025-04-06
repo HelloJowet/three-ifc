@@ -1,6 +1,6 @@
 import * as THREE from 'three'
-
 import { v4 as uuidv4 } from 'uuid'
+
 import { MeshInstanceId } from '../types'
 
 export class MeshInstance {
