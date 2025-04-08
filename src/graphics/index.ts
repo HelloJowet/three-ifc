@@ -1,0 +1,5 @@
+export { Geometry } from './geometry'
+export { Group } from './group'
+export { InstancedMesh } from './instancedMesh'
+export { Material } from './material'
+export { MeshInstance } from './meshInstance'

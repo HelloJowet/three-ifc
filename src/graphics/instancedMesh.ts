@@ -1,8 +1,8 @@
 import * as THREE from 'three'
-import * as WebIfc from 'web-ifc'
 
 import { InstancedMeshId, MeshInstanceId } from '../types'
-import { WebIfcGeometry } from '../webIfc'
+import { Geometry } from './geometry'
+import { Material } from './material'
 import { MeshInstance } from './meshInstance'
 
 /**
@@ -10,19 +10,20 @@ import { MeshInstance } from './meshInstance'
  */
 export class InstancedMesh {
   id: InstancedMeshId
-  transparent: boolean
+  geometry: Geometry
+  material: Material
+
   instancesOrder: MeshInstanceId[] = []
   instances: Map<MeshInstanceId, MeshInstance> = new Map()
   threeJsInstance: THREE.InstancedMesh
   instanceUpdateBlocked: boolean = false
 
-  constructor(webIfcApi: WebIfc.IfcAPI, id: InstancedMeshId, geometryExpressId: number, transparent: boolean) {
+  constructor(id: InstancedMeshId, geometry: Geometry, material: Material) {
     this.id = id
-    this.transparent = transparent
+    this.geometry = geometry
+    this.material = material
 
-    const geometry = WebIfcGeometry.createThreeJsBufferGeometry(webIfcApi, geometryExpressId)
-    const material = new THREE.MeshLambertMaterial({ transparent: transparent, opacity: transparent ? 0.5 : 1 })
-    this.threeJsInstance = new THREE.InstancedMesh(geometry, material, 0)
+    this.threeJsInstance = new THREE.InstancedMesh(geometry.toThreeJsInstance(), material.toThreeJsInstance(), 0)
   }
 
   update() {

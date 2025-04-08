@@ -6,18 +6,19 @@
   "scripts": {
     "start": "node dist/index.js",
     "build": "tsc",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest"
   },
   "author": "contact@jonasfrei.de",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
-    "@ianvs/prettier-plugin-sort-imports": "^4.4.1",
     "three": "^0.175.0",
     "uuid": "^11.1.0",
     "web-ifc": "^0.0.68"
   },
   "devDependencies": {
+    "@ianvs/prettier-plugin-sort-imports": "^4.4.1",
     "@types/three": "^0.175.0",
-    "typescript": "^5.8.2"
+    "typescript": "^5.8.2",
+    "vitest": "^3.1.1"
   }
 }

@@ -1,4 +1,4 @@
-export type ExpressId = number // id of MeshCollection class
+export type ExpressId = number
 export type InstancedMeshId = string
 export type MeshInstanceId = string
 export type ThreeJsInstancedMeshId = number
