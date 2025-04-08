@@ -8,6 +8,6 @@ export class Material {
   }
 
   toThreeJsInstance(): THREE.MeshLambertMaterial {
-    return new THREE.MeshLambertMaterial({ transparent: this.opacity != 1, opacity: this.opacity })
+    return new THREE.MeshLambertMaterial({ transparent: this.opacity != 1.0, opacity: this.opacity })
   }
 }

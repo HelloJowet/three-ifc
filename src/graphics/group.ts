@@ -25,13 +25,10 @@ export class Group {
   setVisibleInstances(visibleExpressIds: Set<ExpressId>, model: Model) {
     const instancedMeshesVisibleInstancesIds: Map<InstancedMeshId, Set<MeshInstanceId>> = new Map()
 
-    for (const expressId of model.entityInstances.keys()) {
-      const entityInstance = model.entityInstances.get(expressId)
-      if (!entityInstance) continue
-
+    for (const entityInstance of model.entityInstances.values()) {
       for (const [instancedMeshId, meshInstanceId] of entityInstance.instancedMeshAndMeshInstanceIds) {
         const meshInstanceIds = instancedMeshesVisibleInstancesIds.get(instancedMeshId) ?? new Set()
-        if (visibleExpressIds.has(expressId)) meshInstanceIds.add(meshInstanceId)
+        if (visibleExpressIds.has(entityInstance.expressId)) meshInstanceIds.add(meshInstanceId)
         instancedMeshesVisibleInstancesIds.set(instancedMeshId, meshInstanceIds)
       }
     }

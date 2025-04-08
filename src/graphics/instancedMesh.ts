@@ -76,15 +76,16 @@ export class InstancedMesh {
 
     for (const [instanceId, instance] of this.instances) {
       if (visibleInstanceIds.has(instanceId)) {
+        visibleInstances.push(instance)
         if (instance.visible) continue
         instance.visible = true
-        visibleInstances.push(instance)
       } else {
+        invisibleInstances.push(instance)
         if (!instance.visible) continue
         instance.visible = false
-        invisibleInstances.push(instance)
       }
 
+      this.instances.set(instanceId, instance)
       needsToBeUpdated = true
     }
 
@@ -93,13 +94,11 @@ export class InstancedMesh {
       this.instancesOrder = [...visibleInstances.map((i) => i.id), ...invisibleInstances.map((i) => i.id)]
 
       // Re-populate buffer with visible instances only
-      const newCount = visibleInstances.length
-      this.threeJsInstance.count = newCount
+      this.threeJsInstance.count = visibleInstances.length
 
-      for (let i = 0; i < visibleInstances.length; i++) {
-        const instance = visibleInstances[i]
-        this.threeJsInstance.setMatrixAt(i, instance.transformationMatrix)
-        this.threeJsInstance.setColorAt(i, instance.color)
+      for (const [index, instance] of visibleInstances.entries()) {
+        this.threeJsInstance.setMatrixAt(index, instance.transformationMatrix)
+        this.threeJsInstance.setColorAt(index, instance.color)
       }
 
       this.update()

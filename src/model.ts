@@ -2,7 +2,7 @@ import { EntityInstance } from './entityInstance'
 import { Group } from './graphics/group'
 import { Metadata } from './metadata'
 import { SpatialStructure } from './spatialStructure'
-import { ExpressId, InstancedMeshId, MeshInstanceId } from './types'
+import { ExpressId } from './types'
 
 export class Model {
   group: Group

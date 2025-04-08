@@ -1,15 +1,15 @@
 import * as WebIfc from 'web-ifc'
 
 export class Metadata {
-  name: string | undefined
+  name?: string
   schema: string
-  creationDate: Date | undefined
-  authorName: string | undefined
-  authorEmail: string | undefined
-  organization: string | undefined
-  preprocessorVersion: string | undefined
-  originatingSystem: string | undefined
-  authorization: string | undefined
+  creationDate?: Date
+  authorName?: string
+  authorEmail?: string
+  organization?: string
+  preprocessorVersion?: string
+  originatingSystem?: string
+  authorization?: string
   descriptions: Record<string, any> = {}
 
   constructor(webIfcApi: WebIfc.IfcAPI) {
