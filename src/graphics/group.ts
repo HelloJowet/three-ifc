@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 
 import { Model } from '../model'
-import { ExpressId, InstancedMeshId, MeshInstanceId } from '../types'
+import { ExpressId, InstancedMeshId, MeshInstanceId, ModelId } from '../types'
 import { InstancedMesh } from './instancedMesh'
 
 /**
@@ -12,10 +12,11 @@ export class Group {
   threeJsInstance: THREE.Group
   // private threeJsInstancedMeshIdToInstancedMeshId: Map<ThreeJsInstancedMeshId, InstancedMeshId> = new Map()
 
-  constructor(instancedMeshes: Map<InstancedMeshId, InstancedMesh>) {
+  constructor(modelId: ModelId, instancedMeshes: Map<InstancedMeshId, InstancedMesh>) {
     this.instancedMeshes = instancedMeshes
 
     this.threeJsInstance = new THREE.Group()
+    this.threeJsInstance.userData = { isPartOfThreeJs: true, modelId: modelId }
     for (const instancedMesh of instancedMeshes.values()) this.threeJsInstance.add(instancedMesh.threeJsInstance)
   }
 
@@ -40,26 +41,4 @@ export class Group {
       instancedMesh.setVisibleInstances(meshInstanceIds)
     }
   }
-
-  //   updateVisibility(entities: { expressId: ExpressId; visible: boolean }[]) {
-  //     const meshesInstances: Map<MeshId, { expressId: ExpressId; visible: boolean }[]> = new Map()
-
-  //     for (const entity of entities) {
-  //       const meshId = this.expressIdToMeshId.get(entity.expressId)
-  //       if (!meshId) continue
-
-  //       let meshInstances = meshesInstances.get(meshId)
-  //       if (!meshInstances) meshInstances = []
-  //       meshInstances.push(entity)
-
-  //       meshesInstances.set(meshId, meshInstances)
-  //     }
-
-  //     for (const [meshId, instances] of meshesInstances.entries()) {
-  //       const mesh = this.meshes.get(meshId)
-  //       if (!mesh) throw new Error(`Mesh with id ${meshId} could not be found`)
-
-  //       mesh.updateInstanceVisibility(instances)
-  //     }
-  //   }
 }

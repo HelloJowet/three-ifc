@@ -24,6 +24,7 @@ export class InstancedMesh {
     this.material = material
 
     this.threeJsInstance = new THREE.InstancedMesh(geometry.toThreeJsInstance(), material.toThreeJsInstance(), 0)
+    this.threeJsInstance.userData = { isPartOfThreeJs: true, instancedMeshId: id }
   }
 
   update() {
@@ -55,6 +56,7 @@ export class InstancedMesh {
 
     const oldThreeJsInstance = this.threeJsInstance
     this.threeJsInstance = newThreeJsInstance
+    this.threeJsInstance.userData = oldThreeJsInstance.userData
     oldThreeJsInstance.removeFromParent()
     oldThreeJsInstance.dispose()
   }
@@ -107,59 +109,5 @@ export class InstancedMesh {
     this.instanceUpdateBlocked = false
   }
 
-  updateInstanceVisibility(instances: { instanceId: MeshInstanceId; visible: boolean }[]) {
-    if (this.instanceUpdateBlocked) {
-      console.warn('InstancedMesh can not be updated, because it is blocked')
-      return
-    }
-
-    this.instanceUpdateBlocked = true
-
-    let needsToBeUpdated = false
-
-    for (const { instanceId, visible } of instances) {
-      const instance = this.instances.get(instanceId)
-      if (!instance) {
-        console.warn(`mesh instance with the id ${instanceId} could not be found`)
-        continue
-      }
-
-      if (visible) {
-        if (instance.visible) continue
-        this.threeJsInstance.count++
-      } else {
-        if (!instance.visible) continue
-        this.threeJsInstance.count--
-      }
-
-      needsToBeUpdated = true
-      this.changeInstanceOrder(instanceId)
-      instance.visible = visible
-      this.instances.set(instanceId, instance)
-    }
-
-    if (needsToBeUpdated) this.update()
-    this.instanceUpdateBlocked = false
-  }
-
-  private changeInstanceOrder(instance01Id: MeshInstanceId) {
-    if (this.threeJsInstance.count === 0) return
-
-    const instance01Index = this.instancesOrder.indexOf(instance01Id)
-    const instance02Index = this.threeJsInstance.count - 1
-    const instance02Id = this.instancesOrder[instance02Index]
-    if (instance01Id === instance02Id) return
-
-    const instance01 = this.instances.get(instance01Id)
-    const instance02 = this.instances.get(instance02Id)
-    if (!instance01 || !instance02) throw new Error('Instance not found')
-
-    this.instancesOrder[instance01Index] = instance02Id
-    this.instancesOrder[instance02Index] = instance01Id
-
-    this.threeJsInstance.setMatrixAt(instance01Index, instance02.transformationMatrix)
-    this.threeJsInstance.setMatrixAt(instance02Index, instance01.transformationMatrix)
-    this.threeJsInstance.setColorAt(instance01Index, instance02.color)
-    this.threeJsInstance.setColorAt(instance02Index, instance01.color)
-  }
+  updateInstanceColor() {}
 }

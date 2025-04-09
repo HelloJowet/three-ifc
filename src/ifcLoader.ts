@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from 'uuid'
 import * as WebIfc from 'web-ifc'
 
 import { Group } from './graphics'
@@ -15,10 +16,11 @@ export class IfcLoader {
     const expressIds = this.getExpressIds(webIfcApi, excludedEntityTypes, includedEntityTypes)
     const [instancedMeshes, entityInstances02] = WebIfcMeshesConverter.convertToInstancedMeshes(webIfcApi, expressIds, entityInstances01)
 
-    const group = new Group(instancedMeshes)
+    const modelId = uuidv4()
+    const group = new Group(modelId, instancedMeshes)
     const metadata = new Metadata(webIfcApi)
 
-    return new Model(group, entityInstances02, spatialStructure, metadata)
+    return new Model(modelId, group, entityInstances02, spatialStructure, metadata)
   }
 
   private static async initializeWebIfcApi(): Promise<WebIfc.IfcAPI> {
