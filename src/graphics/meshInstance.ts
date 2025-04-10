@@ -8,12 +8,13 @@ import { MeshInstanceId } from '../types'
  */
 export class MeshInstance {
   id: MeshInstanceId = uuidv4()
-  visible: boolean
   transformationMatrix: THREE.Matrix4
   color: THREE.Color
+  isVisible: boolean = true
+  isHighlighted: boolean = false
+  isSelected: boolean = false
 
-  constructor(visible: boolean, transformationMatrix: THREE.Matrix4, color: THREE.Color) {
-    this.visible = visible
+  constructor(transformationMatrix: THREE.Matrix4, color: THREE.Color) {
     this.transformationMatrix = transformationMatrix
     this.color = color
   }

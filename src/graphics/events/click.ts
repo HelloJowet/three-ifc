@@ -2,14 +2,14 @@ import * as THREE from 'three'
 
 import { InstancedMeshId, MeshInstanceReference, ModelId } from '../../types'
 
-export class HoverEventHandler {
+export class ClickEventHandler {
   static handle = (
-    event: PointerEvent,
+    event: MouseEvent,
     camera: THREE.Camera,
     scene: THREE.Scene,
     renderer: THREE.WebGLRenderer,
-    onPointerOverObject: (meshInstanceReference: MeshInstanceReference) => void,
-    onPointerOverEmpty: () => void,
+    onClickObject: (meshInstanceReference: MeshInstanceReference) => void,
+    onClickEmpty: () => void,
   ) => {
     const rect = renderer.domElement.getBoundingClientRect()
     const mouse = new THREE.Vector2()
@@ -20,7 +20,8 @@ export class HoverEventHandler {
     raycaster.setFromCamera(mouse, camera)
     const intersects = raycaster.intersectObjects(scene.children, true)
     if (intersects.length === 0) {
-      onPointerOverEmpty()
+      // If no object was clicked, trigger onClickEmpty
+      onClickEmpty()
       return
     }
     const intersection = intersects[0]
@@ -38,7 +39,7 @@ export class HoverEventHandler {
     ) {
       const instancedMeshId: InstancedMeshId = intersection.object.userData['instancedMeshId']
       const modelId: ModelId = intersection.object.parent.userData['modelId']
-      onPointerOverObject({ modelId, instancedMeshId, instancedMeshInstanceIndex: intersection.instanceId })
-    } else onPointerOverEmpty()
+      onClickObject({ modelId, instancedMeshId, instancedMeshInstanceIndex: intersection.instanceId })
+    } else onClickEmpty()
   }
 }

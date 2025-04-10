@@ -27,15 +27,10 @@ export class InstancedMesh {
     this.threeJsInstance.userData = { isPartOfThreeJs: true, instancedMeshId: id }
   }
 
-  update() {
-    if (this.threeJsInstance.instanceColor) this.threeJsInstance.instanceColor.needsUpdate = true
-    this.threeJsInstance.instanceMatrix.needsUpdate = true
-  }
-
   addInstances(newInstances: Set<MeshInstance>) {
     let newVisibleInstanceIds = new Set()
-    for (const newInstance of newInstances) if (newInstance.visible) newVisibleInstanceIds.add(newInstance.id)
-    for (const [instanceId, instance] of this.instances) if (instance.visible) newVisibleInstanceIds.add(instanceId)
+    for (const newInstance of newInstances) if (newInstance.isVisible) newVisibleInstanceIds.add(newInstance.id)
+    for (const [instanceId, instance] of this.instances) if (instance.isVisible) newVisibleInstanceIds.add(instanceId)
 
     const newThreeJsInstance = new THREE.InstancedMesh(this.threeJsInstance.geometry, this.threeJsInstance.material, newVisibleInstanceIds.size)
 
@@ -79,12 +74,12 @@ export class InstancedMesh {
     for (const [instanceId, instance] of this.instances) {
       if (visibleInstanceIds.has(instanceId)) {
         visibleInstances.push(instance)
-        if (instance.visible) continue
-        instance.visible = true
+        if (instance.isVisible) continue
+        instance.isVisible = true
       } else {
         invisibleInstances.push(instance)
-        if (!instance.visible) continue
-        instance.visible = false
+        if (!instance.isVisible) continue
+        instance.isVisible = false
       }
 
       this.instances.set(instanceId, instance)
@@ -103,11 +98,42 @@ export class InstancedMesh {
         this.threeJsInstance.setColorAt(index, instance.color)
       }
 
-      this.update()
+      if (this.threeJsInstance.instanceColor) this.threeJsInstance.instanceColor.needsUpdate = true
+      this.threeJsInstance.instanceMatrix.needsUpdate = true
     }
 
     this.instanceUpdateBlocked = false
   }
 
-  updateInstanceColor() {}
+  updateInstanceSelectState(meshInstanceId: MeshInstanceId, selected: boolean, color: THREE.Color, triggerThreeJsInstanceUpdate: boolean = true) {
+    const meshInstance = this.instances.get(meshInstanceId)
+    if (!meshInstance) throw new Error(`Mesh instance with the id ${meshInstanceId} in the instanced mesh with the id ${this.id} could not be found`)
+
+    if (meshInstance.isSelected === selected) return
+    meshInstance.isSelected = selected
+    this.instances.set(meshInstanceId, meshInstance)
+
+    const meshInstanceIndex = this.instancesOrder.indexOf(meshInstanceId)
+    if (selected) this.threeJsInstance.setColorAt(meshInstanceIndex, color)
+    else this.threeJsInstance.setColorAt(meshInstanceIndex, meshInstance.color)
+
+    if (triggerThreeJsInstanceUpdate && this.threeJsInstance.instanceColor != undefined) this.threeJsInstance.instanceColor.needsUpdate = true
+  }
+
+  updateInstanceHighlightState(meshInstanceId: MeshInstanceId, highlighted: boolean, color: THREE.Color, triggerThreeJsInstanceUpdate: boolean = true) {
+    const meshInstance = this.instances.get(meshInstanceId)
+    if (!meshInstance) throw new Error(`Mesh instance with the id ${meshInstanceId} in the instanced mesh with the id ${this.id} could not be found`)
+
+    if (meshInstance.isHighlighted === highlighted) return
+    meshInstance.isHighlighted = highlighted
+    this.instances.set(meshInstanceId, meshInstance)
+
+    if (meshInstance.isSelected) return
+
+    const meshInstanceIndex = this.instancesOrder.indexOf(meshInstanceId)
+    if (highlighted) this.threeJsInstance.setColorAt(meshInstanceIndex, color)
+    else this.threeJsInstance.setColorAt(meshInstanceIndex, meshInstance.color)
+
+    if (triggerThreeJsInstanceUpdate && this.threeJsInstance.instanceColor != undefined) this.threeJsInstance.instanceColor.needsUpdate = true
+  }
 }
