@@ -15,10 +15,10 @@ export class WebIfcSpatialStructureConverter {
 
   private static convertWebIfcNode(webIfcNode: any, entityInstances: Map<ExpressId, EntityInstance>): [SpatialStructureNode, Map<ExpressId, EntityInstance>] {
     const propertyKeys = Object.keys(webIfcNode).filter((item) => !['expressID', 'type', 'children'].includes(item))
-    const properties: { [key: string]: any } = {}
+    const properties: Map<string, any> = new Map()
     for (const propertyKey of propertyKeys) {
       const propertyValue = webIfcNode[propertyKey]
-      properties[propertyKey] = propertyValue
+      if (propertyValue) properties.set(propertyKey, propertyValue.value)
     }
     entityInstances.set(webIfcNode.expressID, new EntityInstance(webIfcNode.expressID, webIfcNode.type, properties))
 

@@ -34,7 +34,7 @@ export class WebIfcMeshesConverter {
         transformMatrix.fromArray(webIfcPlacedGeometry.flatTransformation)
 
         const instancedMeshInstances = instancedMeshesInstances.get(instancedMeshId) ?? new Set()
-        const newMeshInstance = new MeshInstance(transformMatrix, color)
+        const newMeshInstance = new MeshInstance(webIfcMesh.expressID, transformMatrix, color)
         instancedMeshInstances.add(newMeshInstance)
         instancedMeshesInstances.set(instancedMeshId, instancedMeshInstances)
 
