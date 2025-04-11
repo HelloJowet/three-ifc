@@ -11,6 +11,7 @@
   "author": "contact@jonasfrei.de",
   "license": "MIT",
   "dependencies": {
+    "flatbuffers": "^25.2.10",
     "three": "^0.175.0",
     "uuid": "^11.1.0",
     "web-ifc": "^0.0.68"

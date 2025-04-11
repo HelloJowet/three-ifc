@@ -1,0 +1,76 @@
+table Geometry {
+    vertices: [float] (required);
+    normals: [float] (required);
+    indices: [uint32] (required);
+}
+
+table Material {
+    opacity: float;
+}
+
+table Color {
+    r: float;
+    g: float;
+    b: float;
+}
+
+table MeshInstance {
+    id: string (required);
+    express_id: uint64;
+    transformation_matrix: [float] (required);
+    color: Color (required);
+}
+
+table InstancedMesh {
+    id: string (required);
+    geometry: Geometry (required);
+    material: Material (required);
+    instances: [MeshInstance] (required);
+}
+
+table Group {
+    instanced_meshes: [InstancedMesh] (required);
+}
+
+table Property {
+    key: string (required);
+    value: string (required);
+}
+
+table EntityInstance {
+    express_id: uint64;
+    type: string (required);
+    properties: [Property] (required);
+}
+
+table Metadata {
+    name: string;
+    schema: string (required);
+    creation_date: string;
+    author_name: string;
+    author_email: string;
+    organization: string;
+    preprocessor_version: string;
+    originating_system: string;
+    authorization: string;
+    descriptions: [Property];
+}
+
+table SpatialStructureNode {
+    express_id: uint64;
+    children: [SpatialStructureNode] (required);
+}
+
+table SpatialStructure {
+    node: SpatialStructureNode (required);
+}
+
+table Model {
+    id: string (required);
+    group: Group (required);
+    entity_instances: [EntityInstance] (required);
+    spatial_structure: SpatialStructure (required);
+    metadata: Metadata (required);
+}
+
+root_type Model;
