@@ -1,35 +1,33 @@
 import * as WebIfc from 'web-ifc'
 
 import { EntityInstance } from '../../entityInstance'
-import { SpatialStructure, SpatialStructureNode } from '../../spatialStructure'
 import { ExpressId } from '../../types'
 
 export class WebIfcSpatialStructureConverter {
-  static async convert(webIfcApi: WebIfc.IfcAPI): Promise<[SpatialStructure, Map<ExpressId, EntityInstance>]> {
+  static async convert(webIfcApi: WebIfc.IfcAPI): Promise<[Map<ExpressId, EntityInstance>, ExpressId]> {
     const webIfcSpatialStructure = await webIfcApi.properties.getSpatialStructure(0, true)
-    const [spatialStructureNode, entityInstances] = WebIfcSpatialStructureConverter.convertWebIfcNode(webIfcSpatialStructure, new Map())
-    const spatialStructure = new SpatialStructure(spatialStructureNode)
+    const entityInstances = WebIfcSpatialStructureConverter.convertWebIfcNode(webIfcSpatialStructure, new Map())
+    const rootExpressId = webIfcSpatialStructure.expressID
 
-    return [spatialStructure, entityInstances]
+    return [entityInstances, rootExpressId]
   }
 
-  private static convertWebIfcNode(webIfcNode: any, entityInstances: Map<ExpressId, EntityInstance>): [SpatialStructureNode, Map<ExpressId, EntityInstance>] {
+  private static convertWebIfcNode(webIfcNode: any, entityInstances: Map<ExpressId, EntityInstance>): Map<ExpressId, EntityInstance> {
+    const entityInstance = new EntityInstance(webIfcNode.expressID, webIfcNode.type, new Map(), new Set())
+
     const propertyKeys = Object.keys(webIfcNode).filter((item) => !['expressID', 'type', 'children'].includes(item))
-    const properties: Map<string, any> = new Map()
     for (const propertyKey of propertyKeys) {
       const propertyValue = webIfcNode[propertyKey]
-      if (propertyValue) properties.set(propertyKey, propertyValue.value)
+      if (propertyValue) entityInstance.properties.set(propertyKey, propertyValue.value)
     }
-    entityInstances.set(webIfcNode.expressID, new EntityInstance(webIfcNode.expressID, webIfcNode.type, properties))
 
-    const spatialStructureNodeChildren: Set<SpatialStructureNode> = new Set()
     for (const webIfcNodeChild of webIfcNode.children) {
-      const [childSpatialStructureNode, childEntityInstances] = WebIfcSpatialStructureConverter.convertWebIfcNode(webIfcNodeChild, entityInstances)
-      entityInstances = new Map([...entityInstances, ...childEntityInstances])
-      spatialStructureNodeChildren.add(childSpatialStructureNode)
+      WebIfcSpatialStructureConverter.convertWebIfcNode(webIfcNodeChild, entityInstances)
+      entityInstance.childrenExpressIds.add(webIfcNodeChild.expressID)
     }
-    const spatialStructureNode = new SpatialStructureNode(webIfcNode.expressID, spatialStructureNodeChildren)
 
-    return [spatialStructureNode, entityInstances]
+    entityInstances.set(webIfcNode.expressID, entityInstance)
+
+    return entityInstances
   }
 }

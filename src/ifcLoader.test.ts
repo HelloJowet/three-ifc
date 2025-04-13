@@ -12,5 +12,4 @@ test('IfcLoader', async () => {
   const data = new Uint8Array(arrayBuffer)
 
   const model = await IfcLoader.load(data)
-  // console.log(model.spatialStructure)
 })

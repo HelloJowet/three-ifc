@@ -1,6 +1,6 @@
 import * as flatbuffers from 'flatbuffers'
 
-import { Geometry as FlatbuffersGeometry } from '../../flatbuffers/schema_generated'
+import { Geometry as FlatbuffersGeometry } from '../../flatbuffers/schema'
 import { Geometry } from '../../graphics'
 
 export class FlatbuffersGeometryConverter {

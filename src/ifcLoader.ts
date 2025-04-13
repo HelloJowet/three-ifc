@@ -11,7 +11,7 @@ export class IfcLoader {
     const webIfcApi = await this.initializeWebIfcApi()
     webIfcApi.OpenModel(data, webIfcLoaderSettings)
 
-    let [spatialStructure, entityInstances01] = await WebIfcSpatialStructureConverter.convert(webIfcApi)
+    let [entityInstances01, rootExpressId] = await WebIfcSpatialStructureConverter.convert(webIfcApi)
 
     const expressIds = this.getExpressIds(webIfcApi, excludedEntityTypes, includedEntityTypes)
     const [instancedMeshes, entityInstances02] = WebIfcMeshesConverter.convertToInstancedMeshes(webIfcApi, expressIds, entityInstances01)
@@ -20,13 +20,13 @@ export class IfcLoader {
     const group = new Group(modelId, instancedMeshes)
     const metadata = new Metadata(webIfcApi)
 
-    return new Model(modelId, group, entityInstances02, spatialStructure, metadata)
+    return new Model(modelId, group, rootExpressId, entityInstances02, metadata)
   }
 
   private static async initializeWebIfcApi(): Promise<WebIfc.IfcAPI> {
     const webIfcApi = new WebIfc.IfcAPI()
     webIfcApi.SetWasmPath('https://unpkg.com/web-ifc@0.0.68/', true)
-    webIfcApi.SetWasmPath('')
+    // webIfcApi.SetWasmPath('')
     await webIfcApi.Init()
     webIfcApi.SetLogLevel(WebIfc.LogLevel.LOG_LEVEL_WARN)
 
