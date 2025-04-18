@@ -136,4 +136,12 @@ export class InstancedMesh {
 
     if (triggerThreeJsInstanceUpdate && this.threeJsInstance.instanceColor != undefined) this.threeJsInstance.instanceColor.needsUpdate = true
   }
+
+  checkIfCompletelyInvisible(): boolean {
+    for (const instance of this.instances.values()) {
+      if (instance.isVisible) return false
+    }
+
+    return true
+  }
 }

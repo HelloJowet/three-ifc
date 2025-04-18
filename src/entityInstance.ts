@@ -1,3 +1,4 @@
+import { InstancedMesh } from './graphics'
 import { ExpressId, InstancedMeshId, MeshInstanceId } from './types'
 
 export class EntityInstance {
@@ -12,5 +13,14 @@ export class EntityInstance {
     this.type = type
     this.properties = properties
     this.childrenExpressIds = childrenExpressIds
+  }
+
+  checkIfCompletelyInvisible(instancedMeshes: InstancedMesh[]): boolean {
+    for (const instancedMesh of instancedMeshes) {
+      const isInvisible = instancedMesh.checkIfCompletelyInvisible()
+      if (!isInvisible) return false
+    }
+
+    return true
   }
 }

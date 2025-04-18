@@ -28,7 +28,7 @@ export class IfcLoader {
     webIfcApi.SetWasmPath('https://unpkg.com/web-ifc@0.0.68/', true)
     // webIfcApi.SetWasmPath('')
     await webIfcApi.Init()
-    webIfcApi.SetLogLevel(WebIfc.LogLevel.LOG_LEVEL_WARN)
+    webIfcApi.SetLogLevel(WebIfc.LogLevel.LOG_LEVEL_OFF)
 
     return webIfcApi
   }

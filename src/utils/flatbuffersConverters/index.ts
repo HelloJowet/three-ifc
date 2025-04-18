@@ -1,1 +1,1 @@
-import { FlatbuffersGeometryConverter } from './geometry'
+export { FlatbuffersGeometryConverter } from './geometry'
