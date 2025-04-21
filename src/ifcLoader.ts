@@ -16,6 +16,15 @@ export class IfcLoader {
     const expressIds = this.getExpressIds(webIfcApi, excludedEntityTypes, includedEntityTypes)
     const [instancedMeshes, entityInstances02] = WebIfcMeshesConverter.convertToInstancedMeshes(webIfcApi, expressIds, entityInstances01)
 
+    // set parent express id value in entity instances
+    for (const entityInstance of entityInstances02.values())
+      for (const childExpressId of entityInstance.childrenExpressIds) {
+        const childEntityInstance = entityInstances02.get(childExpressId)
+        if (!childEntityInstance) throw new Error(`Child entity instance with the express id ${childExpressId} could not be found`)
+        childEntityInstance.parentExpressId = entityInstance.expressId
+        entityInstances02.set(childExpressId, childEntityInstance)
+      }
+
     const modelId = uuidv4()
     const group = new Group(modelId, instancedMeshes)
     const metadata = new Metadata(webIfcApi)

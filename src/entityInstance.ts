@@ -6,13 +6,15 @@ export class EntityInstance {
   type: string
   properties: Map<string, any>
   childrenExpressIds: Set<ExpressId>
+  parentExpressId?: ExpressId
   instancedMeshAndMeshInstanceIds: Set<[InstancedMeshId, MeshInstanceId]> = new Set()
 
-  constructor(expressId: ExpressId, type: string, properties: Map<string, any>, childrenExpressIds: Set<ExpressId>) {
+  constructor(expressId: ExpressId, type: string, properties: Map<string, any>, childrenExpressIds: Set<ExpressId>, parentExpressId?: ExpressId) {
     this.expressId = expressId
     this.type = type
     this.properties = properties
     this.childrenExpressIds = childrenExpressIds
+    this.parentExpressId = parentExpressId
   }
 
   checkIfCompletelyInvisible(instancedMeshes: InstancedMesh[]): boolean {

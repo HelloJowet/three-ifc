@@ -18,7 +18,7 @@ export class WebIfcSpatialStructureConverter {
     const propertyKeys = Object.keys(webIfcNode).filter((item) => !['expressID', 'type', 'children'].includes(item))
     for (const propertyKey of propertyKeys) {
       const propertyValue = webIfcNode[propertyKey]
-      if (propertyValue) entityInstance.properties.set(propertyKey, propertyValue.value)
+      if (propertyValue != undefined) entityInstance.properties.set(propertyKey, propertyValue.value)
     }
 
     for (const webIfcNodeChild of webIfcNode.children) {
