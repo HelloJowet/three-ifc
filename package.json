@@ -1,6 +1,6 @@
 {
   "name": "three-ifc",
-  "version": "0.1.0",
+  "version": "0.1.8",
   "description": "Lightweight wrapper around web-ifc",
   "main": "src/index.ts",
   "scripts": {

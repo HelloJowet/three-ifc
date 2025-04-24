@@ -13,4 +13,16 @@ export class FlatbuffersGeometryConverter {
     builder.finish(geometryOffset)
     return builder.asUint8Array()
   }
+
+  static fromFlatbuffersBinary(buffer: Uint8Array<ArrayBufferLike>): Geometry {
+    const byteBuffer = new flatbuffers.ByteBuffer(buffer)
+    const flatbuffersGeometry = FlatbuffersGeometry.getRootAsGeometry(byteBuffer)
+
+    const vertices = flatbuffersGeometry.verticesArray()
+    const normals = flatbuffersGeometry.normalsArray()
+    const indices = flatbuffersGeometry.indicesArray()
+    if (vertices == null || normals == null || indices == null) throw new Error('Failed to convert flatbuffers binary to geometry')
+
+    return new Geometry(vertices, normals, indices)
+  }
 }

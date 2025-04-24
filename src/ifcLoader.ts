@@ -35,7 +35,7 @@ export class IfcLoader {
   private static async initializeWebIfcApi(): Promise<WebIfc.IfcAPI> {
     const webIfcApi = new WebIfc.IfcAPI()
     webIfcApi.SetWasmPath('https://unpkg.com/web-ifc@0.0.68/', true)
-    // webIfcApi.SetWasmPath('')
+    webIfcApi.SetWasmPath('')
     await webIfcApi.Init()
     webIfcApi.SetLogLevel(WebIfc.LogLevel.LOG_LEVEL_OFF)
 
