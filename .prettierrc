@@ -2,6 +2,17 @@
   "semi": false,
   "singleQuote": true,
   "printWidth": 180,
-  "importOrder": ["^(react/(.*)$)|^(react$)", "^(next/(.*)$)|^(next$)", "", "<THIRD_PARTY_MODULES>", "", "^@/(.*)$", "", "^[./]"],
-  "plugins": ["@ianvs/prettier-plugin-sort-imports"]
+  "importOrder": [
+    "^(react/(.*)$)|^(react$)",
+    "^(next/(.*)$)|^(next$)",
+    "",
+    "<THIRD_PARTY_MODULES>",
+    "",
+    "^@/(.*)$",
+    "",
+    "^[./]"
+  ],
+  "plugins": [
+    "@ianvs/prettier-plugin-sort-imports"
+  ]
 }

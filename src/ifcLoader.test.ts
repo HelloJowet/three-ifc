@@ -3,7 +3,7 @@ import { test } from 'vitest'
 import { IfcLoader } from './ifcLoader'
 
 test('IfcLoader', async () => {
-  const response = await fetch('https://thatopen.github.io/engine_components/resources/small.ifc')
+  const response = await fetch('https://thatopen.github.io/engine_components/resources/ifc/school_str.ifc')
   if (!response.ok) {
     throw new Error(`Failed to fetch file: ${response.statusText}`)
   }

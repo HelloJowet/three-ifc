@@ -1,6 +1,6 @@
 {
   "name": "three-ifc",
-  "version": "0.1.27",
+  "version": "0.2.0",
   "description": "Lightweight wrapper around web-ifc",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -37,17 +37,14 @@
   "author": "contact@jonasfrei.de",
   "license": "MIT",
   "dependencies": {
-    "flatbuffers": "^25.2.10",
-    "three": "^0.175.0",
-    "uuid": "^11.1.0",
-    "web-ifc": "^0.0.68"
+    "flatbuffers": "^25.9.23",
+    "three": "^0.181.2",
+    "uuid": "^13.0.0",
+    "web-ifc": "^0.0.74"
   },
   "devDependencies": {
-    "@ianvs/prettier-plugin-sort-imports": "^4.4.1",
-    "@swc/core": "^1.11.22",
-    "@types/three": "^0.175.0",
-    "tsup": "^8.4.0",
-    "typescript": "^5.8.2",
-    "vitest": "^3.1.1"
+    "@ianvs/prettier-plugin-sort-imports": "^4.7.0",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.14"
   }
 }
